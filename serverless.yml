@@ -27,7 +27,7 @@ functions:
   incomeHook:
     handler: bin/main
     events:
-      - httpApi:
+      - http:
           path: /
           method: any
           cors: true
