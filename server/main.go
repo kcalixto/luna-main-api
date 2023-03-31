@@ -9,6 +9,8 @@ import (
 type Server struct{}
 
 func (s *Server) Mount(e *echo.Echo) {
+	log.Printf("e: %+v",e)
+	
 	e.GET("/hello", s.GetHello)
 	e.POST("/hello", s.PostHello)
 	e.GET("/greeting", s.GetGreeting)
