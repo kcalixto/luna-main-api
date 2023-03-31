@@ -1,0 +1,18 @@
+service: luna-api-main
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+  stage: ${opt:stage, 'prd'}
+  # region: sa-east-1
+
+functions:
+  incomeHook:
+    handler: bin/main
+    events:
+      - httpApi:
+          path: /
+          method: any
+          cors: true
