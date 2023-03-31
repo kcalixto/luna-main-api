@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "serverless-certificate-creator": "^1.6.0",
+    "serverless-domain-manager": "^7.0.2"
+  }
 }
