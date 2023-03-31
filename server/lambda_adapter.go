@@ -20,6 +20,8 @@ type LambdaAdapter struct {
 }
 
 func (a *LambdaAdapter) Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	fmt.Printf("req: %+v", req)
+	
 	newReq, err := a.ProxyEventToHTTPRequest(req)
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err

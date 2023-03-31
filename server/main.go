@@ -1,15 +1,18 @@
 package server
 
 import (
-	"github.com/labstack/echo"
+	"encoding/json"
+	"io"
 	"log"
 	"net/http"
+
+	"github.com/labstack/echo"
 )
 
 type Server struct{}
 
 func (s *Server) Mount(e *echo.Echo) {
-	log.Printf("e: %+v",e)
+	log.Printf("e: %+v", e)
 	
 	e.GET("/hello", s.GetHello)
 	e.POST("/hello", s.PostHello)
@@ -28,9 +31,25 @@ func (s *Server) PostHello(c echo.Context) error {
 	log.Print(c.Request())
 	log.Print(c.ParamValues())
 	log.Print(c.FormParams())
+	log.Print(c.Request().Body)
 
-	name := c.FormValue("name")
-	hello := "Hello, " + name + "!"
+	type Test struct {
+		Name string `json:"name"`
+	}
+
+	var req Test
+
+	requestBytes, err := io.ReadAll(c.Request().Body)
+	if err != nil {
+		panic(err)
+	}
+
+	err = json.Unmarshal(requestBytes, &req)
+	if err != nil {
+		panic(err)
+	}
+
+	hello := "Hello, " + req.Name + "!"
 
 	return c.JSON(http.StatusOK, hello)
 }
