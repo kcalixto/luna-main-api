@@ -3,7 +3,7 @@ name: main-api
 on:
   push:
     branches:
-      - dev
+      - dev-lock
 
 jobs:
   build-deploy:
