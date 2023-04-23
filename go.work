@@ -1,6 +1,13 @@
 go 1.19
 
 use (
-	./server
-	./controller
+	server
+	controller
+	service
+	data
+	types
+
+	//! AWS
+	aws
+	aws/dynamodb
 )

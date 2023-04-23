@@ -1,4 +1,4 @@
-service: luna-api-main
+service: luna-api
 
 frameworkVersion: '3'
 
@@ -16,20 +16,23 @@ custom:
     domainName: ${self:custom.domain.${self:provider.stage}}
     stage: ${self:provider.stage}
     createRoute53Record: true
+    basePath: v1
 
 provider:
   name: aws
   runtime: go1.x
   stage: ${opt:stage, 'prd'}
-  # region: sa-east-1
+  region: sa-east-1
+  environment:
+    NODE_ENV: ${self:provider.stage}
 
 functions:
-  incomeHook:
-    handler: bin/main
+  main:
+    handler: bin/server
     events:
       - http:
-          path: /
-          method: any
+          method: ANY
+          path: '{proxy+}'
           cors: true
 
 plugins:
