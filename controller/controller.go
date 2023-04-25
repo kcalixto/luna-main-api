@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/labstack/echo"
-	"github.com/lunaorg/luna-main-api/service"
+	"github.com/labstack/echo/v4"
+	"github.com/lunaorg/luna-main-api/services"
 )
 
 type Controller struct {

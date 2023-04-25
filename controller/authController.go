@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/lunaorg/luna-main-api/types"
 )
 
 func (c *Controller) TokenController(e echo.Context) error {
 	var data types.AuthTokenInput
-	err := c.ParseEchoContext(e, data)
+	err := c.ParseEchoContext(e, &data)
 	if err != nil {
 		fmt.Println(err)
 		return err

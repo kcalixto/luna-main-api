@@ -1,44 +1,60 @@
 package main
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/labstack/echo"
-
-	// "github.com/labstack/echo/middleware"
-	_controller "github.com/lunaorg/luna-main-api/controller"
-	"github.com/lunaorg/luna-main-api/server/adapter"
+	"github.com/lunaorg/luna-main-api/server/services"
 )
 
-func Mount(e *echo.Echo) {
-	controller := _controller.NewController()
+var svc *services.Server
 
-	// e.Use(middleware.JWTWithConfig(middleware.JWTConfig{
-	// 	SigningKey:  []byte(os.Getenv("JWT_SECRET")),
-	// 	TokenLookup: "Authorization",
-	// 	Skipper: func(c echo.Context) bool {
-	// 		return c.Request().URL.Path == "/login"
-	// 	},
-	// }))
+func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	if os.Getenv("DEBUG") == "true" {
+		fmt.Printf("raw request: %+v \n", req)
+	}
 
-	e.POST("/login", controller.TokenController)
+	return svc.ProxyWithContext(ctx, req)
+}
 
-	//* user
-	e.POST("/register", controller.RegisterUser)
+func initDependencies() (err error) {
+	svc = services.NewServer()
+
+	return nil
 }
 
 func main() {
-	e := echo.New()
-
-	Mount(e)
+	err := initDependencies()
+	if err != nil {
+		panic(err)
+	}
 
 	if os.Getenv("NODE_ENV") == "local" {
-		fmt.Println("running_local")
-		e.Logger.Fatal(e.Start(":3000"))
+		fmt.Println("running local")
+
+		item := map[string]interface{}{
+			"login":    "teste",
+			"password": "local",
+		}
+
+		bytes, err := json.Marshal(item)
+		if err != nil {
+			panic(err)
+		}
+
+		req := events.APIGatewayProxyRequest{
+			HTTPMethod: "POST",
+			Path:       "/login",
+			Resource:   "/login",
+			Body:       string(bytes),
+		}
+
+		fmt.Println(Handler(context.Background(), req))
 	} else {
-		lambdaAdapter := &adapter.LambdaAdapter{Echo: e}
-		lambda.Start(lambdaAdapter.Handler)
+		lambda.Start(Handler)
 	}
 }
