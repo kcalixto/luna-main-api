@@ -1,6 +1,9 @@
 package service
 
 import (
+	"errors"
+	"strings"
+
 	data "github.com/lunaorg/luna-main-api/data/user"
 	logger "github.com/lunaorg/luna-main-api/libs/log"
 	"github.com/lunaorg/luna-main-api/types/viewmodel"
@@ -22,6 +25,11 @@ func (s *Service) NewUserService() (*UserService, error) {
 }
 
 func (s *UserService) RegisterUser(user types.RegisterUser) error {
+	errs := user.Validate()
+	if len(errs) > 0 {
+		return errors.New(strings.Join(errs, "\n"))
+	}
+
 	err := s.userData.Register(user)
 	if err != nil {
 		logger.Error(err.Error())

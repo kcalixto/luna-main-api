@@ -1,7 +1,6 @@
 package types
 
 import (
-	"errors"
 	"regexp"
 )
 
@@ -11,15 +10,15 @@ type RegisterUser struct {
 	Name     string `json:"name"`
 }
 
-func (r *RegisterUser) Validate() (e []error) {
+func (r *RegisterUser) Validate() (e []string) {
 	if r.Login == "" {
-		e = append(e, errors.New("empty Login"))
+		e = append(e, "empty Login")
 	}
 	if match, _ := regexp.MatchString(`^[a-z0-9]+(?:(?:-|_)+[a-z0-9]+)*$`, r.Login); !match {
-		e = append(e, errors.New("login must not contain spaces or special characters"))
+		e = append(e, "login must not contain spaces or special characters")
 	}
 	if r.Password == "" {
-		e = append(e, errors.New("empty Password"))
+		e = append(e, "empty Password")
 	}
 
 	return e
