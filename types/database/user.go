@@ -8,7 +8,7 @@ import (
 )
 
 type RegisterUserDB struct {
-	ID string `dynamodbav:"sk"`
+	ID string `dynamodbav:"user_id"`
 	PK string `dynamodbav:"pk"`
 	SK string `dynamodbav:"sk"`
 
