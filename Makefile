@@ -9,8 +9,12 @@ build:
 clean:
 	rm -rf ./bin
 
-deploy:	
+deploy:
+	echo "debug - show files"
+	pwd
+	ls
+	echo "*----------------*"
 	serverless deploy --stage $(STAGE) --verbose
 
-deploy-infra:	
+deploy-infra:
 	cd infra && serverless deploy --stage $(STAGE) --verbose
