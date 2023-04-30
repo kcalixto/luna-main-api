@@ -42,9 +42,24 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      MAIN_API_NAME: luna-api-prd-main
+
     steps:
       - uses: actions/checkout@v3
-      - run: make build
       - run: npm i serverless -g
       - run: npm ci
-      - run: make run
+      - name: check serverless file change
+        id: check-serverless
+        uses: tj-actions/changed-files@v35
+        with:
+          files: serverless.yml
+
+      - name: check should deploy fast
+        if: steps.check-serverless.outputs.any_changed == 'false'
+        run: |
+          make fast-deploy
+        
+      - name: check should deploy slow
+        if: steps.check-serverless.outputs.any_changed == 'true'
+        run: |
+          make slow-deploy
