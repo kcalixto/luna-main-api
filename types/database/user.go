@@ -15,11 +15,13 @@ type RegisterUserDB struct {
 	Name string `dynamodbav:"name,omitempty"`
 }
 
+const PKprefix = "USER"
+
 func NewRegisterUserDB(item vm.RegisterUser) (*RegisterUserDB, error) {
 	id := uuid.New()
 
 	buildPk := func(login string, id string) string {
-		return fmt.Sprintf("%s#%s", login, id)
+		return fmt.Sprintf("%s#%s#%s", PKprefix, login, id)
 	}
 
 	return &RegisterUserDB{
