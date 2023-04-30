@@ -33,16 +33,21 @@ jobs:
     needs: check-infra
     env:
       STAGE: prd
+
+      CGO_ENABLED: 0
+      GO111MODULE: on
+      GOARCH: amd64
+      GOOS: linux
+
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
-      - uses: actions/checkout@v3
       - name: build
         run: |
           make build
       - run: npm i serverless -g
-      - run: npm install -D
+      - run: npm ci
 
       - name: Deploy to Serverless
         run: |
