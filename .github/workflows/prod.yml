@@ -43,12 +43,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
-      - name: build
-        run: |
-          make build
+      - uses: actions/checkout@v3
+      - run: make build
       - run: npm i serverless -g
       - run: npm ci
-
-      - name: Deploy to Serverless
-        run: |
-          make run
+      - run: make run
