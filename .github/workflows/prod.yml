@@ -16,13 +16,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: npm i serverless -g
       - name: check infra changes
         id: infra
         uses: tj-actions/changed-files@v35
         with:
           files: infra/**
-
+      - run: npm i serverless -g
       - name: check should deploy infra
         if: steps.infra.outputs.any_changed == 'true'
         run: |
