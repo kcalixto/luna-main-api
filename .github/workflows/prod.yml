@@ -46,7 +46,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: npm i serverless -g
       - run: npm ci
       - name: check serverless file change
         id: check-serverless
