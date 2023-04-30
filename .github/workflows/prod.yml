@@ -42,7 +42,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      MAIN_API_NAME: luna-api-prd-main
+      MAIN_API_NAME: main
 
     steps:
       - uses: actions/checkout@v3
