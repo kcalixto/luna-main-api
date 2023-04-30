@@ -21,7 +21,7 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: infra/**
-      - run: npm i serverless -g
+
       - name: check should deploy infra
         if: steps.infra.outputs.any_changed == 'true'
         run: |
