@@ -5,11 +5,17 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	logger "github.com/lunaorg/luna-main-api/libs/log"
-	"github.com/lunaorg/luna-main-api/types"
+	database "github.com/lunaorg/luna-main-api/types/database"
+	viewmodel "github.com/lunaorg/luna-main-api/types/viewmodel"
 )
 
-func (d *UserData) Register(item types.RegisterUser) error {
-	av, err := dynamodbattribute.MarshalMap(item)
+func (d *UserData) Register(item viewmodel.RegisterUser) error {
+	data, err := database.NewRegisterUserDB(item)
+	if err != nil {
+		logger.Error("Got error creating NewRegisterUserDB: %s", err.Error())
+	}
+
+	av, err := dynamodbattribute.MarshalMap(data)
 	if err != nil {
 		logger.Error("Got error marshalling new user: %s", err.Error())
 	}

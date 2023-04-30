@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	logger "github.com/lunaorg/luna-main-api/libs/log"
-	"github.com/lunaorg/luna-main-api/types"
+	"github.com/lunaorg/luna-main-api/types/viewmodel"
 )
 
 func (c *Controller) RegisterUser(e echo.Context) (err error) {

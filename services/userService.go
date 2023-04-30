@@ -3,7 +3,7 @@ package service
 import (
 	data "github.com/lunaorg/luna-main-api/data/user"
 	logger "github.com/lunaorg/luna-main-api/libs/log"
-	"github.com/lunaorg/luna-main-api/types"
+	"github.com/lunaorg/luna-main-api/types/viewmodel"
 )
 
 type UserService struct {
