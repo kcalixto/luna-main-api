@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	logger "github.com/lunaorg/luna-main-api/libs/log"
 	"github.com/lunaorg/luna-main-api/types"
 )
 
@@ -16,24 +17,18 @@ func (c *Controller) RegisterUser(e echo.Context) (err error) {
 		return err
 	}
 
-	svc := c.service.NewUserService(data)
-	err = svc.RegisterUser()
+	svc, err := c.service.NewUserService()
 	if err != nil {
-		fmt.Println(err)
+		logger.Error(err.Error())
+		return err
+	}
+
+	err = svc.RegisterUser(data)
+	if err != nil {
+		logger.Error(err.Error())
 		return err
 	}
 
 	msg := fmt.Sprintf("Welcome, %s", data.Login)
 	return e.JSON(http.StatusOK, msg)
 }
-
-// func GetGreetingController(e echo.Context) error {
-// 	return e.JSON(http.StatusOK, "Welcome to test")
-// }
-
-// func PostAddressController(e echo.Context) error {
-// 	address := e.FormValue("address")
-// 	txt := "Your address is " + address
-
-// 	return e.JSON(http.StatusOK, txt)
-// }

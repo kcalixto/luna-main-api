@@ -23,8 +23,10 @@ provider:
   runtime: go1.x
   stage: ${opt:stage, 'prd'}
   region: sa-east-1
+  
   environment:
     NODE_ENV: ${self:provider.stage}
+    LUNA_INFRA_DB_NAME: luna-infra-${self:provider.stage}-db
 
 functions:
   main:

@@ -14,7 +14,7 @@ resources:
     DyanamoDB:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:service}-db
+        TableName: ${self:service}-${self:provider.stage}-db
         AttributeDefinitions:
           - AttributeName: "pk"
             AttributeType: "S"

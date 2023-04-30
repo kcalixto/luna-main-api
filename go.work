@@ -1,10 +1,8 @@
 go 1.19
 
 use (
-
-	//! AWS
-	aws
-	aws/dynamodb
+	libs/aws/dynamodb
+	libs/log
 	controller
 	data
 	server
