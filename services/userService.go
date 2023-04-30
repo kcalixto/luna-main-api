@@ -33,6 +33,7 @@ func (s *UserService) RegisterUser(user types.RegisterUser) error {
 	err := s.userData.Register(user)
 	if err != nil {
 		logger.Error(err.Error())
+		return err
 	}
 
 	return nil

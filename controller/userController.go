@@ -26,7 +26,8 @@ func (c *Controller) RegisterUser(e echo.Context) (err error) {
 	err = svc.RegisterUser(data)
 	if err != nil {
 		logger.Error(err.Error())
-		return err
+
+		return e.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	msg := fmt.Sprintf("Welcome, %s", data.Login)
