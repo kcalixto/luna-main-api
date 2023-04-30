@@ -1,8 +1,11 @@
 package db
 
 import (
+	logger "github.com/lunaorg/luna-main-api/libs/log"
 	"os"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
@@ -13,16 +16,14 @@ type DB struct {
 }
 
 func NewDB() (*DB, error) {
-	// reference: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/dynamo-example-create-table-item.html
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String(endpoints.SaEast1RegionID),
+	})
+	if err != nil {
+		logger.Error(err.Error())
+		return nil, err
+	}
 
-	// Initialize a session that the SDK will use to load
-	// credentials from the shared credentials file ~/.aws/credentials
-	// and region from the shared configuration file ~/.aws/config.
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
-
-	// Create DynamoDB client
 	svc := dynamodb.New(sess)
 
 	return &DB{
