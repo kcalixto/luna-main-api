@@ -4,7 +4,10 @@ install-dependencies:
 	npm ci
 
 build:
-	GOOS=linux GOARCH=amd64 go build -o bin/server server/handler/main.go
+	export GO111MODULE=on
+	export CGO_ENABLED=1
+
+	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/server server/handler/main.go
 
 clean:
 	rm -rf ./bin
@@ -12,7 +15,7 @@ clean:
 deploy:
 	echo "debug - show files"
 	pwd
-	ls
+	ls -R
 	echo "*----------------*"
 	serverless deploy --stage $(STAGE) --verbose
 
