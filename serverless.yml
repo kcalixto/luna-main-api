@@ -1,6 +1,6 @@
 service: luna-api
 
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 custom:
   domain:
@@ -23,7 +23,17 @@ provider:
   runtime: go1.x
   stage: ${opt:stage, 'prd'}
   region: sa-east-1
-  
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+          Resource: "*"
+
   environment:
     NODE_ENV: ${self:provider.stage}
     LUNA_INFRA_DB_NAME: luna-infra-${self:provider.stage}-db
@@ -34,7 +44,7 @@ functions:
     events:
       - http:
           method: ANY
-          path: '{proxy+}'
+          path: "{proxy+}"
           cors: true
 
 plugins:
