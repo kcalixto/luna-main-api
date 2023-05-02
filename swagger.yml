@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: Luna
+  description: AI oriented budget planner
+  version: 2.0.0
+
+tags:
+    - name: "User"
+    - name: "Account"
+    
+servers:
+  - url: https://api.dev.luna.app.br
+    description: Development ULR
+  - url: https://api.luna.app.br
+    description: Production ULR
+    
+paths:
+  /v1/register:
+    post:
+      summary: "Register new User"
+      tags:
+        - "User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        '201':
+          description: "Created"
+        '400':
+          description: "BadRequest"
+
+  /v1/login:
+    post:
+      summary: "Get Authentication Token"
+      tags:
+        - "User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        '200':
+          description: "Ok"
+          content:
+            applications/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        '400':
+          description: "BadRequest"
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+     
+    LoginRequest:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+          
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string

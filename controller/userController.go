@@ -30,6 +30,5 @@ func (c *Controller) RegisterUser(e echo.Context) (err error) {
 		return e.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	msg := fmt.Sprintf("Welcome, %s", data.Login)
-	return e.JSON(http.StatusOK, msg)
+	return e.JSON(http.StatusCreated, "")
 }
