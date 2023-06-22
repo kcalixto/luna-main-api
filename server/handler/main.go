@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 
@@ -14,10 +13,6 @@ import (
 var svc *services.Server
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	if os.Getenv("DEBUG") == "true" {
-		fmt.Printf("raw request: %+v \n", req)
-	}
-
 	return svc.ProxyWithContext(ctx, req)
 }
 
@@ -35,25 +30,7 @@ func main() {
 
 	if os.Getenv("NODE_ENV") == "local" {
 		fmt.Println("running local")
-
-		item := map[string]interface{}{
-			"login":    "teste",
-			"password": "local",
-		}
-
-		bytes, err := json.Marshal(item)
-		if err != nil {
-			panic(err)
-		}
-
-		req := events.APIGatewayProxyRequest{
-			HTTPMethod: "POST",
-			Path:       "/login",
-			Resource:   "/login",
-			Body:       string(bytes),
-		}
-
-		fmt.Println(Handler(context.Background(), req))
+		svc.StartLocal(":8080")
 	} else {
 		lambda.Start(Handler)
 	}

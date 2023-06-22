@@ -17,13 +17,7 @@ func (c *Controller) RegisterUser(e echo.Context) (err error) {
 		return err
 	}
 
-	svc, err := c.service.NewUserService()
-	if err != nil {
-		logger.Error(err.Error())
-		return err
-	}
-
-	err = svc.RegisterUser(data)
+	err = c.userSvc.RegisterUser(data)
 	if err != nil {
 		logger.Error(err.Error())
 

@@ -6,7 +6,7 @@ import (
 )
 
 func getcaller() string {
-	pc, _, _, ok := runtime.Caller(1)
+	pc, _, _, ok := runtime.Caller(2)
 	details := runtime.FuncForPC(pc)
 	if ok && details != nil {
 		return details.Name()
@@ -19,6 +19,5 @@ func Info(e string, items ...any) {
 }
 
 func Error(e string, items ...any) {
-
 	fmt.Printf("["+getcaller()+" ERROR]"+e, items...)
 }

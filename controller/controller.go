@@ -5,15 +5,38 @@ import (
 	"io"
 
 	"github.com/labstack/echo/v4"
-	"github.com/lunaorg/luna-main-api/services"
+	logger "github.com/lunaorg/luna-main-api/libs/log"
+	services "github.com/lunaorg/luna-main-api/services"
 )
 
 type Controller struct {
-	service *service.Service
+	accountSvc *services.AccountService
+	userSvc    *services.UserService
+	authSvc    *services.AuthService
 }
 
-func NewController() *Controller {
-	return &Controller{}
+func NewController() (*Controller, error) {
+	authSvc, err := services.NewAuthService()
+	if err != nil {
+		logger.Error(err.Error())
+		return &Controller{}, err
+	}
+	userSvc, err := services.NewUserService()
+	if err != nil {
+		logger.Error(err.Error())
+		return &Controller{}, err
+	}
+	accountSvc, err := services.NewAccountService()
+	if err != nil {
+		logger.Error(err.Error())
+		return &Controller{}, err
+	}
+
+	return &Controller{
+		authSvc:    authSvc,
+		userSvc:    userSvc,
+		accountSvc: accountSvc,
+	}, nil
 }
 
 func (c *Controller) ParseEchoContext(e echo.Context, item interface{}) error {

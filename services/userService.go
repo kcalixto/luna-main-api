@@ -13,7 +13,7 @@ type UserService struct {
 	userData *data.UserData
 }
 
-func (s *Service) NewUserService() (*UserService, error) {
+func NewUserService() (*UserService, error) {
 	userData, err := data.NewUserData()
 	if err != nil {
 		return nil, err

@@ -5,16 +5,12 @@ import (
 	"github.com/lunaorg/luna-main-api/types"
 )
 
-type AuthService struct {
-	login string
+type AuthService struct{}
+
+func NewAuthService() (*AuthService, error) {
+	return &AuthService{}, nil
 }
 
-func (s *Service) NewAuthService(auth types.AuthTokenInput) *AuthService {
-	return &AuthService{
-		login: auth.Login,
-	}
-}
-
-func (s *AuthService) PrintName() {
-	fmt.Println(s.login)
+func (s *AuthService) PrintName(auth types.AuthTokenInput) {
+	fmt.Println(auth.Login)
 }

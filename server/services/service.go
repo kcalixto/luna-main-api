@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	echoadapter "github.com/awslabs/aws-lambda-go-api-proxy/echo"
 	"github.com/labstack/echo/v4"
-	_controller "github.com/lunaorg/luna-main-api/controller"
+	controller "github.com/lunaorg/luna-main-api/controller"
 )
 
 type Server struct {
@@ -27,9 +27,21 @@ func (s *Server) ProxyWithContext(ctx context.Context, req events.APIGatewayProx
 	return s.l.ProxyWithContext(ctx, req)
 }
 
-func (s *Server) Mount() {
-	controller := _controller.NewController()
+func (s *Server) StartLocal(port string) {
+	s.Mount()
+	s.e.Start(port)
+}
 
-	s.e.POST("/v1/login", controller.TokenController)
-	s.e.POST("/v1/register", controller.RegisterUser)
+func (s *Server) Mount() {
+	endpoint, err := controller.NewController()
+	if err != nil {
+		panic(err)
+	}
+
+	s.e.POST("/v1/login", endpoint.Token)
+	s.e.POST("/v1/register", endpoint.RegisterUser)
+
+	s.e.POST("/v1/new-account", endpoint.SaveAccount)
+	s.e.POST("/v1/account/new-income", endpoint.NewIncome)
+	s.e.POST("/v1/account/new-expense", endpoint.NewExpense)
 }
